@@ -1,5 +1,27 @@
+import { pipeline } from 'stream/promises';
+import { Transform } from 'stream';
+import { EOL } from 'os';
+
 const transform = async () => {
-    // Write your code here 
+
+    const transformStream = new Transform({
+      transform(chunk, enc, cb) {
+        try {
+          const chunkString = chunk.toString().trim();
+          const reverseChunk = chunkString.split('').reverse().join('');
+          cb(null, reverseChunk + EOL);
+        } catch (err) {
+          cb(err);
+        }
+      },
+    });
+
+    try {
+      await pipeline(process.stdin, transformStream, process.stdout);
+    } catch (err) {
+      console.log(`Error: ${err}`);
+    }
+
 };
 
 await transform();
