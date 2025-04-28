@@ -15,7 +15,12 @@ const transform = async () => {
         }
       },
     });
-    await pipeline(process.stdin, transformStream, process.stdout);
+
+    try {
+      await pipeline(process.stdin, transformStream, process.stdout);
+    } catch (err) {
+      console.log(`Error: ${err}`);
+    }
 
 };
 

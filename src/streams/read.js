@@ -11,7 +11,13 @@ const read = async () => {
 
     const readStream = fs.createReadStream(fileForStream);
 
-     readStream.on('data', (chunk) => {process.stdout.write(chunk)})
+    try {
+        await pipeline(readStream, process.stdout);
+      } catch (err) {
+        console.log(`Error: ${err}`);
+      }
+
+    //  readStream.on('data', (chunk) => {process.stdout.write(chunk)})
 
 
     // Write your code here 

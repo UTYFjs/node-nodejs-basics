@@ -8,9 +8,15 @@ const __dirname = dirname(__filename);
 
 const write = async () => {
     const fileForWrite = path.join(__dirname, 'files', 'fileTowrite.txt')
-
+    fs.watchFile(fileForWrite, 'utf-8', function (){ 
+      console.log('file changed');
+    });
     const writeStream = fs.createWriteStream(fileForWrite);
-    await pipeline(process.stdin, writeStream)
+    try {
+      await pipeline(process.stdin, writeStream);
+    } catch (err) {
+      console.log(`Error: ${err}`);
+    }
   // Write your code here
 };
 
